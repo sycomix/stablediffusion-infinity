@@ -52,7 +52,7 @@ def edge_pad(img, mask, mode=1):
         res[res == 9] = 0
         res[res > 0] = 1
         ylst, xlst = res.nonzero()
-        queue = [(y, x) for y, x in zip(ylst, xlst)]
+        queue = list(zip(ylst, xlst))
         # bfs here
         cnt = res.astype(np.float32)
         acc = img.astype(np.float32)
@@ -97,7 +97,7 @@ def perlin_noise(img, mask):
     x, y = np.meshgrid(lin, lin)
     avg = img.mean(axis=0).mean(axis=0)
     # noise=[((perlin(x, y)+1)*128+avg[i]).astype(np.uint8) for i in range(3)]
-    noise = [((perlin(x, y) + 1) * 0.5 * 255).astype(np.uint8) for i in range(3)]
+    noise = [((perlin(x, y) + 1) * 0.5 * 255).astype(np.uint8) for _ in range(3)]
     noise = np.stack(noise, axis=-1)
     # mask=skimage.measure.block_reduce(mask,(8,8),np.min)
     # mask=mask.repeat(8, axis=0).repeat(8, axis=1)

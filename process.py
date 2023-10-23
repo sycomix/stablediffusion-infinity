@@ -361,22 +361,21 @@ class GridProcessor(BaseProcessor):
     )
 
     grad[mask == 0] = 0
-    if True:
-        kernel = [[1] * 3 for _ in range(3)]
-        nmask = mask.copy()
-        nmask[nmask > 0] = 1
-        res = scipy.signal.convolve2d(
-            nmask, kernel, mode="same", boundary="fill", fillvalue=1
-        )
-        res[nmask < 1] = 0
-        res[res == 9] = 0
-        res[res > 0] = 1
-        ylst, xlst = res.nonzero()
-        for y, x in zip(ylst, xlst):
-            grad[y,x]=0
-            # for yi in range(-1,2):
-                # for xi in range(-1,2):
-                    # grad[y+yi,x+xi]=0
+    kernel = [[1] * 3 for _ in range(3)]
+    nmask = mask.copy()
+    nmask[nmask > 0] = 1
+    res = scipy.signal.convolve2d(
+        nmask, kernel, mode="same", boundary="fill", fillvalue=1
+    )
+    res[nmask < 1] = 0
+    res[res == 9] = 0
+    res[res > 0] = 1
+    ylst, xlst = res.nonzero()
+    for y, x in zip(ylst, xlst):
+        grad[y,x]=0
+        # for yi in range(-1,2):
+            # for xi in range(-1,2):
+                # grad[y+yi,x+xi]=0
     self.x0 = mask_on_tgt[0] + x0
     self.x1 = mask_on_tgt[0] + x1
     self.y0 = mask_on_tgt[1] + y0
